@@ -1,0 +1,3 @@
+services:
+  my-super-app:
+    image: matsuev/goapp:latest

@@ -1,0 +1,41 @@
+version: '3'
+
+dotenv:
+  - .env
+
+tasks:
+  prepare:
+    cmd: go mod tidy
+
+  lint:
+    cmds:
+      - golangci-lint run ./cmd
+
+  test:
+    cmds:
+      - go test -cover ./cmd
+
+  compile:
+    cmd: GOOS=linux go build -o ./bin/goapp ./goapp
+
+  build:
+    cmd: docker build --pull --rm -f './goapp/Dockerfile' -t 'matsuev/goapp:latest' '.'
+
+  push:
+    cmds:
+      - docker tag matsuev/goapp:latest matsuev/goapp:${APP_VERSION}
+      - docker push matsuev/goapp:${APP_VERSION}
+      - docker push matsuev/goapp:latest
+
+  deploy:
+    cmd: echo "Deploy to k8s"
+
+  release:
+    cmds:
+      - task: prepare
+      - task: lint
+      - task: test
+      - task: compile
+      - task: build
+      - task: push
+      - task: deploy

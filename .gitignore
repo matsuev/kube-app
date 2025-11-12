@@ -23,3 +23,6 @@ ehthumbs.db
 
 # Environment variables file
 .env
+.token
+
+bin
