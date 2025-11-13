@@ -14,7 +14,6 @@ spec:
     spec:
       containers:
       - name: go-service
-        image: ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:latest
-        imagePullPolicy: Never
+        image: alonaka/app:latest
         ports:
         - containerPort: 8080
