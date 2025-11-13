@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: golang
-        image: ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:latest
-        imagePullPolicy: Never
+        image: vladica2007/app:latest
+        #imagePullPolicy: Never
         ports:
         - containerPort: 8080
