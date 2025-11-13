@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-deploypment
+  labels:
+    app: go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go
+
+  template:
+    metadata:
+      labels:
+        app: go
+    spec:
+      containers:
+      - name: go
+        image: yapedro/goapp:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-bookworm-deploypment
+  labels:
+    app: go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go
+
+  template:
+    metadata:
+      labels:
+        app: go
+    spec:
+      containers:
+      - name: go
+        image: yapedro/goapp:v1.0.3-bookworm
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
