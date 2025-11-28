@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-deployment
+spec:
+  selector:
+    matchLabels:
+      app: go
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: go
+    spec:
+      containers:
+      - name: golang
+        image: nikiyan/app:latest
+        ports:
+        - containerPort: 8080
