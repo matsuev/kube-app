@@ -1,15 +1,3 @@
 services:
-  gitea:
-    image: docker.gitea.com/gitea:latest
-    container_name: gitea
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-    restart: always
-    volumes:
-      - ./data:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 127.0.0.1:80:3000
-      - 127.0.0.1:222:22
+  my-super-app:
+    image: matsuev/goapp:latest
