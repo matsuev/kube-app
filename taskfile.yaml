@@ -4,38 +4,41 @@ dotenv:
   - .env
 
 tasks:
-  prepare:
-    cmd: go mod tidy
+  # prepare:
+  #   cmd: go mod tidy
 
-  lint:
-    cmds:
-      - golangci-lint run ./cmd
+  # lint:
+  #   cmds:
+  #     - golangci-lint run ./cmd
 
-  test:
-    cmds:
-      - go test -cover ./cmd
+  # test:
+  #   cmds:
+  #     - go test -cover ./cmd
 
-  compile:
-    cmd: GOOS=linux go build -o ./bin/goapp ./goapp
+  # compile:
+  #   cmd: GOOS=linux go build -o ./bin/goapp ./goapp
 
   build:
-    cmd: docker build --pull --rm -f './goapp/Dockerfile' -t 'matsuev/goapp:latest' '.'
+    cmds: 
+      - docker build --pull --rm -f ./goapp/alpine.Dockerfile -t ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:latest .
+      - docker build --pull --rm -f ./goapp/debian.Dockerfile -t ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-bookworm .
 
   push:
     cmds:
-      - docker tag matsuev/goapp:latest matsuev/goapp:${APP_VERSION}
-      - docker push matsuev/goapp:${APP_VERSION}
-      - docker push matsuev/goapp:latest
+      - docker tag ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:latest ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:${APP_IMAGE_TAG}-bookworm
+      - docker push ${APP_IMAGE_OWNER}/${APP_IMAGE_NAME}:latest
 
   deploy:
-    cmd: echo "Deploy to k8s"
+    cmd: kubectl apply -f go-deployment.yaml
 
   release:
     cmds:
-      - task: prepare
-      - task: lint
-      - task: test
-      - task: compile
+      # - task: prepare
+      # - task: lint
+      # - task: test
+      # - task: compile
       - task: build
       - task: push
       - task: deploy
